@@ -18,8 +18,8 @@ port = int(os.environ.get("FASTAPIPORT", 8000))
 # -----------------------------------------------------------------------------
 # Fake in-memory "databases"
 # -----------------------------------------------------------------------------
-owners: Dict[UUID, OwnerRead] = {}
-pets: Dict[UUID, PetRead] = {}
+OWNERS: Dict[UUID, OwnerRead] = {}
+PETS: Dict[UUID, PetRead] = {}
 
 app = FastAPI(
     title="Owner/Pet API",
@@ -75,6 +75,10 @@ def patch_owner(owner_id: UUID, payload: OwnerUpdate):
     OWNERS[owner_id] = updated
     return updated
 
+@app.put("/owners/{owner_id}", tags=["owners"])
+def put_owner_placeholder(owner_id: UUID):
+    raise HTTPException(status_code=501, detail="Not implemented")
+
 @app.delete("/owners/{owner_id}", status_code=204, tags=["owners"])
 def delete_owner(owner_id: UUID):
     if owner_id not in OWNERS:
@@ -115,6 +119,10 @@ def patch_pet(pet_id: UUID, payload: PetUpdate):
     updated = PetRead(**data)
     PETS[pet_id] = updated
     return updated
+
+@app.put("/pets/{pet_id}", tags=["pets"])
+def put_pet_placeholder(pet_id: UUID):
+    raise HTTPException(status_code=501, detail="Not implemented")
 
 @app.delete("/pets/{pet_id}", status_code=204, tags=["pets"])
 def delete_pet(pet_id: UUID):
